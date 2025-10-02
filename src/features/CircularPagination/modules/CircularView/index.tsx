@@ -1,4 +1,4 @@
-import { FC, CSSProperties, useCallback, useMemo, memo, RefObject } from 'react';
+import { FC, CSSProperties, useMemo, memo, RefObject, useId } from 'react';
 import s from './CircularView.module.scss';
 import { Dot } from '@features/CircularPagination/modules/Dot';
 import { Controls } from '@features/CircularPagination/modules/Controls';
@@ -17,10 +17,17 @@ type CircularViewProps = {
 	onPrev: () => void;
 	onNext: () => void;
 	phiDeg: number;
+	ariaGroupLabel?: string;
+	ariaRingDescription?: string;
 };
 
-export const CircularView: FC<CircularViewProps> = memo(
-	({
+type CSSVars = CSSProperties & {
+	['--phi']?: string;
+	['--ring']?: string;
+};
+
+export const CircularView: FC<CircularViewProps> = memo((props) => {
+	const {
 		stageRef,
 		radius,
 		dotSize,
@@ -33,59 +40,70 @@ export const CircularView: FC<CircularViewProps> = memo(
 		onPrev,
 		onNext,
 		phiDeg,
-	}) => {
-		const isTablet = useMediaQuery('(max-width: 767.9px)');
+		ariaGroupLabel = 'Круговая пагинация',
+		ariaRingDescription = 'Круг',
+	} = props;
 
-		const stageStyle = useMemo<CSSProperties>(
-			() => ({
-				width: stageSize,
-				height: stageSize,
-				['--phi']: `${phiDeg}deg`,
-			}),
-			[stageSize, phiDeg],
-		);
+	const isTablet = useMediaQuery('(max-width: 991.9px)');
+	const stageId = useId();
+	const stageStyle = useMemo<CSSVars>(
+		() => ({
+			width: stageSize,
+			height: stageSize,
+			['--phi']: `${phiDeg}deg`,
+		}),
+		[stageSize, phiDeg],
+	);
+	const ringStyle = useMemo<CSSVars>(
+		() => ({
+			width: radius * 2,
+			height: radius * 2,
+			['--ring']: '1px',
+		}),
+		[radius],
+	);
 
-		type RingStyle = CSSProperties & Record<'--ring', string>;
+	const total = anglesDeg.length;
 
-		const ringStyle = useMemo<RingStyle>(
-			() => ({
-				width: radius * 2,
-				height: radius * 2,
-				'--ring': '1px',
-			}),
-			[radius],
-		);
+	return (
+		<div className={s.Circular} role="group" aria-label={ariaGroupLabel}>
+			{!isTablet && (
+				<div
+					id={stageId}
+					ref={stageRef}
+					className={s.Stage}
+					style={stageStyle}
+					aria-roledescription={ariaRingDescription}
+					aria-label={ariaRingDescription}
+				>
+					<div className={s.Ring} style={ringStyle} />
+					{anglesDeg.map((angle, i) => (
+						<Dot
+							key={i}
+							index={i}
+							angleDeg={angle}
+							active={i === activeIndex}
+							onClick={onDotClick}
+							radius={radius}
+							size={dotSize}
+							durationMs={0}
+							title={titles?.[i] ?? undefined}
+							animating={animating}
+						/>
+					))}
+				</div>
+			)}
 
-		const handleDotClick = useCallback(
-			(index: number) => {
-				onDotClick(index);
-			},
-			[onDotClick],
-		);
-
-		return (
-			<div className={s.Circular} role="group" aria-label="Кольцевая навигация">
-				{!isTablet && (
-					<div ref={stageRef} className={s.Stage} style={stageStyle} tabIndex={0} aria-roledescription="Кольцо">
-						<div className={s.Ring} style={ringStyle} />
-						{anglesDeg.map((angle, i) => (
-							<Dot
-								key={i}
-								index={i}
-								angleDeg={angle}
-								active={i === activeIndex}
-								onClick={handleDotClick}
-								radius={radius}
-								size={dotSize}
-								durationMs={0}
-								title={titles?.[i] ?? undefined}
-								animating={animating}
-							/>
-						))}
-					</div>
-				)}
-				<Controls goPrev={onPrev} goNext={onNext} index={activeIndex} total={anglesDeg.length} />
-			</div>
-		);
-	},
-);
+			<Controls
+				goPrev={onPrev}
+				goNext={onNext}
+				index={activeIndex}
+				total={total}
+				ariaPrevLabel="Влево"
+				ariaNextLabel="Вправо"
+				ariaControlsId={stageId}
+				disabled={animating}
+			/>
+		</div>
+	);
+});

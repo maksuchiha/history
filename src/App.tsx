@@ -3,7 +3,7 @@ import { extendedYears, extendedYears2 } from '@store/data'; // как у вас
 
 export const App = () => {
 	const titles: (string | null)[] = ['Первый', 'Второй', null, 'Четвертый', 'Пятый', 'Шестой'];
-	const titles2: (string | null)[] = ['Первый', 'Второй', 'Третий', 'Четвертый', 'Пятый', 'Шестой'];
+	const titles2: (string | null)[] = ['Первый', 'Второй', 'Третий'];
 
 	return (
 		<div className="container">

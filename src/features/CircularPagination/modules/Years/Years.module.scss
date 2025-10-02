@@ -6,7 +6,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 210px;
+  left: 215px;
   z-index: 0;
   pointer-events: none;
   text-align: center;
@@ -46,19 +46,16 @@
   .Years {
     left: 97px;
     gap: 50px;
-    .Year {
-      font-size: 115px;
-    }
-  }
-}
-
-@include tablet {
-  .Years {
     position: static;
     transform: none;
     padding-bottom: 55px;
     margin-bottom: 35px;
     border-bottom: 1px solid rgba(66, 82, 122, .2);
+  }
+}
+
+@include tablet {
+  .Years {
     .Year {
       font-size: 115px;
     }

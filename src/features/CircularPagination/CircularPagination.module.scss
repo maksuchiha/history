@@ -74,15 +74,6 @@
 
 @include laptop {
   .History {
-    .Title {
-      font-size: 35px;
-      padding-left: 35px;
-    }
-  }
-}
-
-@include tablet {
-  .History {
     padding-top: 60px;
 
     border: none;
@@ -95,12 +86,24 @@
     }
     .Title {
       position: static;
-      font-size: 28px;
+      font-size: 35px;
       padding-left: 0;
       margin-bottom: 55px;
       &:before {
         content: unset;
       }
+    }
+  }
+}
+
+@include tablet {
+  .History {
+
+    .Title {
+
+      font-size: 28px;
+
+
     }
   }
 }

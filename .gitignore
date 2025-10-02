@@ -22,7 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/yarn.lock
+yarn.lock
+tsconfig.tsbuildinfo
 
 # misc
 .DS_Store

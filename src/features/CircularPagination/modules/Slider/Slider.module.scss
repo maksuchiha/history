@@ -63,13 +63,13 @@
     &:disabled {
       display: none;
     }
-
   }
 }
 
 @include desktop {
   .Slider {
     .SwiperSlide {
+      max-width: 40%;
       &:not(:last-of-type) {
         margin-right: 35px;
       }
@@ -80,10 +80,22 @@
 @include laptop {
   .Slider {
     margin-top: 35px;
+    min-height: unset;
+
+    padding: 0 0 35px 0;
+    .Arrow {
+      display: none;
+    }
     .SwiperSlide {
-      max-width: 40%;
+
       &:not(:last-of-type) {
         margin-right: 25px;
+      }
+      &:global(.swiper-slide) {
+        opacity: .4;
+      }
+      &:global(.swiper-slide-active) {
+        opacity: 1;
       }
     }
   }
@@ -91,12 +103,7 @@
 
 @include tablet {
   .Slider {
-    min-height: unset;
     margin-top: 25px;
-    padding: 0 0 35px 0;
-    .Arrow {
-      display: none;
-    }
   }
 }
 
@@ -105,12 +112,6 @@
     .SwiperSlide {
       max-width: 60%;
       transition: opacity .3s;
-    }
-    .SwiperSlide:global(.swiper-slide) {
-      opacity: .4;
-    }
-    .SwiperSlide:global(.swiper-slide-active) {
-      opacity: 1;
     }
   }
 }
