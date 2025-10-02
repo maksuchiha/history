@@ -1,0 +1,116 @@
+@use "@styles/base/variables" as *;
+@use "@styles/base/mixins" as *;
+
+.Slider {
+  margin-top: 55px;
+  padding: 0 80px 40px;
+  user-select: none;
+  position: relative;
+  min-height: 190px;
+  --swiper-pagination-color: #42567A;
+  --swiper-pagination-bullet-inactive-color: rgba(66, 86, 122, .5);
+  --swiper-pagination-bottom: -30px;
+  --swiper-pagination-bullet-horizontal-gap: 5px;
+  .SwiperSlide {
+    width: 100%;
+    max-width: 25%;
+    flex-shrink: 0;
+    &:not(:last-of-type) {
+      margin-right: 50px;
+    }
+  }
+
+  .Slide {
+    &__title {
+      font-size: clamp(16px, 6vw, 35px);
+      color: $blue;
+      margin-bottom: 15px;
+      font-family: 'Bebas Neue', sans-serif;
+    }
+    &__info {
+      font-size: clamp(14px, 2vw, 20px);
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .Arrow {
+    position: absolute;
+    top: 35%;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
+    background: $white;
+    border-radius: 50%;
+    color: $blue;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+    svg {
+      height: 15px;
+      width: 10px;
+      path {
+        stroke: currentColor;
+      }
+    }
+    &_prev {
+      left: 20px;
+    }
+    &_next {
+      right: 20px;
+    }
+    &:disabled {
+      display: none;
+    }
+
+  }
+}
+
+@include desktop {
+  .Slider {
+    .SwiperSlide {
+      &:not(:last-of-type) {
+        margin-right: 35px;
+      }
+    }
+  }
+}
+
+@include laptop {
+  .Slider {
+    margin-top: 35px;
+    .SwiperSlide {
+      max-width: 40%;
+      &:not(:last-of-type) {
+        margin-right: 25px;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .Slider {
+    min-height: unset;
+    margin-top: 25px;
+    padding: 0 0 35px 0;
+    .Arrow {
+      display: none;
+    }
+  }
+}
+
+@include mobile {
+  .Slider {
+    .SwiperSlide {
+      max-width: 60%;
+      transition: opacity .3s;
+    }
+    .SwiperSlide:global(.swiper-slide) {
+      opacity: .4;
+    }
+    .SwiperSlide:global(.swiper-slide-active) {
+      opacity: 1;
+    }
+  }
+}

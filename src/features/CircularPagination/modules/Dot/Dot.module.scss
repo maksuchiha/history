@@ -1,0 +1,229 @@
+@use "@styles/base/variables" as *;
+
+.DotWrap {
+  --ring: 0px;
+  --dur: .42s;
+  --dot-dur: .25s;
+  --label-dur: .25s;
+  --easing-move: cubic-bezier(.2, .8, .2, 1);
+  --easing-pop: cubic-bezier(.25, .9, .2, 1.15);
+
+  --angle: 0deg;
+  --angle-neg: calc(-1 * var(--angle));
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--size);
+  height: var(--size);
+  transform-origin: center;
+  transform:
+          translate(-50%, -50%)
+          rotate(var(--angle))
+          translate(calc(var(--radius) + (var(--ring) / 2)));
+  transition: transform var(--dur) var(--easing-move);
+  will-change: transform;
+
+  .Dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--size);
+    height: var(--size);
+    transform: translate(-50%, -50%) scale(1);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    transition: transform var(--dur) var(--easing-move);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      background: $dark-blue;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      visibility: visible;
+      transition:
+              opacity var(--dot-dur),
+              visibility var(--dot-dur),
+              transform var(--dot-dur) var(--easing-pop);
+      z-index: 2;
+    }
+  }
+
+  .Bubble {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--size);
+    height: var(--size);
+    transform: translate(-50%, -50%) scale(0);
+    transform-origin: center;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: $light-blue;
+    border: 1px solid $dark-blue;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+            opacity var(--dot-dur),
+            visibility var(--dot-dur),
+            transform var(--dot-dur);
+    z-index: 1;
+  }
+
+  .Label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 3;
+    color: $dark-blue;
+    font-size: clamp(10px, calc(var(--size) * 0.42), 22px);
+    line-height: 1;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    font-weight: 300;
+
+    transform: translate(-50%, -50%)
+    rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+    translateY(4px) translateZ(0);
+
+    transition:
+            opacity var(--dot-dur),
+            transform var(--label-dur) var(--easing-pop),
+            visibility 0s;
+
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  .DotTitle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: left center;
+
+    transform: translate(0, -50%)
+    rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+    translateX(calc(var(--title-offset) - 6px));
+    transition: opacity .25s ease, visibility .25s step-end;
+
+    white-space: nowrap;
+    color: $dark-blue;
+    font-size: 20px;
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0s;
+  }
+
+  &:not([data-animating="true"]) {
+    .Dot {
+      &:hover::before,
+      &[data-active="true"]::before {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, -50%) scale(.7);
+      }
+
+      &:hover .Bubble,
+      &[data-active="true"] .Bubble {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      &:hover .Label,
+      &[data-active="true"] .Label {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%)
+        rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+        translateY(0) translateZ(0);
+      }
+
+      &:hover .DotTitle,
+      &[data-active="true"] .DotTitle {
+        opacity: 1;
+        visibility: visible;
+        animation: dot-title-in .25s ease forwards;
+        animation-delay: var(--dot-dur, .25s);
+      }
+    }
+  }
+
+  &[data-animating="true"] {
+    pointer-events: none;
+
+    .Dot::before {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .Bubble {
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, -50%) scale(0);
+      transition: opacity 0s, visibility 0s, transform 0s;
+    }
+
+    .Label {
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, -50%)
+      rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+      translateY(4px);
+      transition: opacity 0s, transform 0s, visibility 0s;
+    }
+
+    .DotTitle {
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(0, -50%)
+      rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+      translateX(calc(var(--title-offset) - 6px));
+      transition: opacity 0s, visibility 0s, transform 0s;
+      animation: none;
+    }
+  }
+}
+
+@keyframes dot-title-in {
+  0% {
+    transform: translate(0, -50%)
+    rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+    translateX(calc(var(--title-offset) - 6px));
+  }
+  100% {
+    transform: translate(0, -50%)
+    rotate(calc(var(--angle-neg) - var(--phi, 0deg)))
+    translateX(var(--title-offset));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .DotWrap {
+    transition: none;
+
+    .Dot,
+    .Dot::before,
+    .Bubble,
+    .Label,
+    .DotTitle {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

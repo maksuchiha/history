@@ -1,0 +1,36 @@
+@use "@styles/base/variables" as *;
+@use "@styles/base/mixins" as *;
+
+.Circular {
+  margin: auto;
+  user-select: none;
+  .Stage {
+    position: relative;
+    z-index: 1;
+    /* ВАЖНО: читаем переменную --phi */
+    transform: rotate(var(--phi, 0deg));
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .Ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    box-sizing: content-box;
+    border: var(--ring, 1px) solid rgba(66, 82, 122, .2);
+  }
+}
+
+@include tablet {
+  .Circular {
+    margin: 0;
+    position: absolute;
+    left: 0;
+    bottom: 15px;
+    z-index: 11;
+    background: $light-blue;
+  }
+}

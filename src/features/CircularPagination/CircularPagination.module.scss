@@ -1,0 +1,106 @@
+@use "@styles/base/variables" as *;
+@use "@styles/base/mixins" as *;
+
+.History {
+  position: relative;
+  border-left: 1px solid $dark-blue-opacity;
+  border-right: 1px solid $dark-blue-opacity;
+  padding: 175px 0 60px;
+  &:after {
+    content: '';
+    width: 1px;
+    height: 100%;
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    z-index: -1;
+    background: $dark-blue-opacity;
+    transform: translateX(-50%);
+  }
+  &:before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 44%;
+    z-index: -1;
+    background: $dark-blue-opacity;
+  }
+  .Wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .Title {
+    font-size: 56px;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    padding-left: 80px;
+    &:before {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      background: linear-gradient(to bottom, #3877EE, #EF5DA8);
+    }
+  }
+}
+
+
+
+@include desktop {
+  .History {
+    padding-top: 100px;
+    &:before {
+      top: 40%;
+    }
+    .Title {
+      font-size: 48px;
+      padding-left: 50px;
+    }
+  }
+}
+
+@include laptop {
+  .History {
+    .Title {
+      font-size: 35px;
+      padding-left: 35px;
+    }
+  }
+}
+
+@include tablet {
+  .History {
+    padding-top: 60px;
+
+    border: none;
+    position: relative;
+    &:after, &:before {
+      content: unset;
+    }
+    .Wrapper {
+      position: static;
+    }
+    .Title {
+      position: static;
+      font-size: 28px;
+      padding-left: 0;
+      margin-bottom: 55px;
+      &:before {
+        content: unset;
+      }
+    }
+  }
+}

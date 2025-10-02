@@ -1,0 +1,63 @@
+@use "@styles/base/variables" as *;
+@use "@styles/base/mixins" as *;
+
+.Controls {
+  position: absolute;
+  bottom: 0;
+  left: 80px;
+  z-index: 2;
+  .Counter {
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .Buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .Arrow {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid $dark-blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color .3s;
+    svg {
+      height: 15px;
+      width: 10px;
+    }
+    &:active {
+      transition: background-color .1s;
+    }
+    @include hoverDesktop {
+      &:hover {
+        background: $white;
+      }
+      &:active {
+        background: $light-blue;
+      }
+    }
+  }
+}
+
+
+@include tablet {
+  .Controls {
+    position: static;
+    .Counter {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .Arrow {
+      width: 25px;
+      height: 25px;
+      svg {
+        height: 10px;
+        width: 6px;
+      }
+    }
+  }
+}

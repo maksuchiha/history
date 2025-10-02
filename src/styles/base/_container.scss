@@ -1,0 +1,40 @@
+@use "@styles/base/mixins" as *;
+@use "@styles/base/variables" as *;
+
+.container {
+	position: relative;
+	max-width: 1440px;
+	width: 100%;
+	padding: 0 15px;
+	margin: 0 auto;
+}
+
+@include desktopXL {
+	.container {
+		max-width: 1200px;
+	}
+}
+
+@include desktop {
+	.container {
+		max-width: 992px;
+	}
+}
+
+@include laptop {
+	.container {
+		max-width: 768px;
+	}
+}
+
+@include tablet {
+	.container {
+		max-width: 576px;
+	}
+}
+
+@include mobile {
+	.container {
+		max-width: 100%;
+	}
+}

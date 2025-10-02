@@ -1,0 +1,60 @@
+@use "@styles/base/variables" as *;
+
+*,
+:after,
+:before {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+html {
+	min-width: 320px;
+}
+
+body {
+	background: $light-blue;
+	font-family: 'PT Sans', sans-serif;
+	min-width: 320px;
+	color: $dark-blue;
+	#root {
+		min-height: 100vh;
+	}
+}
+
+h1 {
+	font-weight: 800;
+}
+
+a {
+	text-decoration: none;
+	transition: color 0.3s;
+	user-select: none;
+	display: inline-block;
+}
+
+button {
+	border: none;
+	outline: none;
+	background: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	user-select: none;
+	transition: color 0.3s;
+}
+
+label {
+	user-select: none;
+}
+
+input,
+textarea {
+	outline: none;
+	border: none;
+}
+
+ul {
+	list-style: none;
+}
